@@ -22,46 +22,46 @@ const getMessages = async (room_id) => {
 
 
 
-// const sendMessage = async (data) =>{
+const sendMessage = async (data) =>{
 
-//     const response = await fetch(`/${data.room_id}/send`,{
-//         method:"POST",
-//         headers:{
-//             "Content-type":"aplication/json",
-//             "X-CSRFToken":data.csrfmiddlewaretoken
-//         },
-//         body: JSON.stringify(data)
-//     });
-//     const html = await response.text();
-//     const $uniqueMessageContainer = Qs(".unique-message-container");
-//     $uniqueMessageContainer.insertAdjacentHTML("beforeend", html);
+    const response = await fetch(`/${data.room_id}/send`,{
+        method:"POST",
+        headers:{
+            "Content-type":"aplication/json",
+            "X-CSRFToken":data.csrfmiddlewaretoken
+        },
+        body: JSON.stringify(data)
+    });
+    const html = await response.text();
+    const $uniqueMessageContainer = Qs(".unique-message-container");
+    $uniqueMessageContainer.insertAdjacentHTML("beforeend", html);
  
-//     Qs(".send-message").reset();
-// };
+    Qs(".send-message").reset();
+};
 
-const sendMessage =  async (data) => {
-    const room_id = data.room_id
-    const socket = new WebSocket(`ws://${window.location.host}/ws/chat/${room_id}/`);
+// const sendMessage =  async (data) => {
+//     const room_id = data.room_id
+//     const socket = new WebSocket(`ws://${window.location.host}/ws/chat/${room_id}/`);
 
-    socket.onopen = function (event) {
-        // Envie a mensagem assim que a conexão WebSocket estiver aberta
-        socket.send(JSON.stringify({
-            'message': data.message,
-            'csrfmiddlewaretoken': data.csrfmiddlewaretoken
-        }));
-    };
+//     socket.onopen = function (event) {
+//         // Envie a mensagem assim que a conexão WebSocket estiver aberta
+//         socket.send(JSON.stringify({
+//             'message': data.message,
+//             'csrfmiddlewaretoken': data.csrfmiddlewaretoken
+//         }));
+//     };
 
-    socket.onmessage = function (event) {
-        const data = JSON.parse(event.data);
-        const $uniqueMessageContainer = Qs(".unique-message-container");
-        $uniqueMessageContainer.insertAdjacentHTML("beforeend", data.message);
-    };
+//     socket.onmessage = function (event) {
+//         const data = JSON.parse(event.data);
+//         const $uniqueMessageContainer = Qs(".unique-message-container");
+//         $uniqueMessageContainer.insertAdjacentHTML("beforeend", data.message);
+//     };
 
-    socket.onclose = function (event) {
-        // Lógica para lidar com o fechamento da conexão, se necessário
-    };
+//     socket.onclose = function (event) {
+//         // Lógica para lidar com o fechamento da conexão, se necessário
+//     };
 
-}
+// }
 const createRoom = async (data) =>{
 
     const response = await fetch(`/create-room`,{
